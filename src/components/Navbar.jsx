@@ -90,7 +90,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="/products" className={getLinkClassName("/products")}>
+              <Link href="/ebook" className={getLinkClassName("/ebook")}>
                 Browse Ebooks
               </Link>
             </li>

@@ -1,130 +1,96 @@
-import { auth } from "@/lib/auth";
-import {
-  Bars,
-  Bell,
-  Envelope,
-  Gear,
-  House,
-  Magnifier,
-  Person,
-} from "@gravity-ui/icons";
+import { auth } from "@/lib/auth"; 
+import { headers } from "next/headers"; 
+
+import { LayoutSideContentLeft, Bell, Envelope, Gear, House, Magnifier, Person, Bookmark, FileText, CreditCard } from "@gravity-ui/icons";
+
+
+import { LayoutDashboard, BookOpen, PlusCircle, TrendingUp, Users, User, Building, Settings } from "lucide-react";
 import { Button, Drawer } from "@heroui/react";
-import { ChartArea, User2 } from "lucide-react";
-import { headers } from "next/headers";
-import Image from "next/image";
 import Link from "next/link";
-import { BiMoney } from "react-icons/bi";
-import { TbAsset } from "react-icons/tb";
 
-export default async function DashboardSidebar() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+export async function DashboardSidebar() {
+    
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
 
-  const user = session?.user;
-  const role = user?.role || "user";
-  // console.log(user)
-  const daashboardItems = {
-    writer: [
-      { icon: ChartArea, label: "Overview", link: "/dashboard/writer" },
-      { icon: TbAsset, label: "Products", link: "/dashboard/writer/products" },
-      {
-        icon: BiMoney,
-        label: "Transaction",
-        link: "/dashboard/writer/transaction",
-      },
-    ],
+    const user = session?.user;
+    const role = user?.role || "user"; 
 
-    user: [
-      { icon: ChartArea, label: "Overview", link: "/dashboard/user" },
-      { icon: TbAsset, label: "Products", link: "/dashboard/user/products" },
-      {
-        icon: BiMoney,
-        label: "Transaction",
-        link: "/dashboard/user/transaction",
-      },
-    ],
+    const userNavLinks = [
+        { icon: LayoutDashboard, href: "/dashboard/user", label: "Overview" },
+        { icon: BookOpen, href: "/dashboard/user/history", label: "Purchase History" },
+        { icon: BookOpen, href: "/dashboard/user/purchased", label: "Purchased Ebooks" },
+        { icon: Bookmark, href: "/dashboard/user/bookmarks", label: "Bookmarked" },
+        { icon: User, href: "/dashboard/user/profile", label: "Profile" },
+    ];
 
-    admin: [
-      { icon: ChartArea, label: "Overview", link: "/dashboard/reader" },
-      { icon: User2, label: "User Manage", link: "/dashboard/reader/products" },
-      {
-        icon: BiMoney,
-        label: "Transaction",
-        link: "/dashboard/reader/transaction",
-      },
-    ],
-  };
+    const writerNavLinks = [
+        { icon: LayoutDashboard, href: "/dashboard/writer", label: "Overview" },
+        { icon: BookOpen, href: "/dashboard/writer/manage", label: "Manage Ebooks" },
+        { icon: PlusCircle, href: "/dashboard/writer/manage/add", label: "Add a book" },
+        { icon: Bookmark, href: "/dashboard/writer/bookmarks", label: "Bookmarked" },
+        { icon: TrendingUp, href: "/dashboard/writer/sales", label: "Sales History" },
+    ];
 
-  const navItems = daashboardItems.user;
+    const adminNavLinks = [
+        { icon: LayoutDashboard, href: "/dashboard/admin", label: "Overview" },
+        { icon: Users, href: "/dashboard/admin/users", label: "Manage Users" },
+        { icon: BookOpen, href: "/dashboard/admin/ebooks", label: "Manage Ebooks" },
+        { icon: TrendingUp, href: "/dashboard/admin/transactions", label: "Transactions" },
+    ];
 
-  //   console.log(navItems)
-  // //   const navItems = [
-  // //     { icon: House, label: "Home" },
-  // //     { icon: Magnifier, label: "Search" },
-  // //     { icon: Bell, label: "Notifications" },
-  // //     { icon: Envelope, label: "Messages" },
-  // //     { icon: Person, label: "Profile" },
-  // //     { icon: Gear, label: "Settings" },
-  // //   ];
+    const navLinksMap = {
+        user: userNavLinks,
+        writer: writerNavLinks,
+        admin: adminNavLinks
+    };
 
-  return (
-    <Drawer>
-      <Button className={"hidden "} variant="secondary">
-        <Bars />
-        Menu
-      </Button>
+    const navItems = navLinksMap[role] || userNavLinks;
 
-      <nav className="flex flex-col gap-1 w-[200px] border border-right-1">
-        <div className="border-b  py-3">
-          <Image
-            src={"/logo-xl.png"}
-            height={"100"}
-            width={"100"}
-            className="h-10 w-full object-cover"
-            alt=""
-          />
-        </div>
+    const navContent = (
+        <nav className="flex flex-col gap-1">
+            {navItems.map((item) => (
+                <Link
+                    key={item.label}
+                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
+                    href={item.href}
+                >
+                    <item.icon className="size-5 text-muted" />
+                    {item.label}
+                </Link>
+            ))}
+        </nav>
+    );
 
-        {navItems?.map((item) => (
-          <Link key={item.label} href={item.link}>
-            <button
-              key={item.label}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
-              type="button"
-            >
-              <item.icon className="size-5 text-muted" />
-              {item.label}
-            </button>
-          </Link>
-        ))}
-      </nav>
+    return (
+        <>
+            <aside className="lg:block w-64 shrink-0 border-r border-default p-4 ">
+                {navContent}
+            </aside>
+            
+           
+             <Drawer>
+                <Button className={"hidden"} variant="secondary"><LayoutSideContentLeft></LayoutSideContentLeft> Sidebar</Button>
+                    
+                <Drawer.Backdrop>
+                    <Drawer.Content placement="left">
+                        <Drawer.Dialog>
+                            <Drawer.CloseTrigger />
+                            <Drawer.Header>
+                                <Drawer.Heading>Navigation</Drawer.Heading>
+                            </Drawer.Header>
+                            <Drawer.Body>
+                                {navContent}
+                            </Drawer.Body>
+                        </Drawer.Dialog>
+                    </Drawer.Content>
+                </Drawer.Backdrop>
+            </Drawer>
+           
+        </>
+    );
+    
 
-      <Drawer.Backdrop>
-        <Drawer.Content placement="left">
-          <Drawer.Dialog>
-            <Drawer.CloseTrigger />
-            <Drawer.Header>
-              <Drawer.Heading>Navigation</Drawer.Heading>
-            </Drawer.Header>
-            <Drawer.Body>
-              <nav className="flex flex-col gap-1">
-                {navItems.map((item) => (
-                  <Link key={item.label} href={item.link}>
-                    <button
-                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
-                      type="button"
-                    >
-                      <item.icon className="size-5 text-muted" />
-                      {item.label}
-                    </button>
-                  </Link>
-                ))}
-              </nav>
-            </Drawer.Body>
-          </Drawer.Dialog>
-        </Drawer.Content>
-      </Drawer.Backdrop>
-    </Drawer>
-  );
-}
+  }
+
