@@ -48,7 +48,7 @@ export default function BookCard({ book }) {
       </div>
 
       {/* বাটন */}
-      <Link href={`/books/${book._id}`}>
+      <Link href={`/ebook/${book._id}`}>
         <Button className="w-full bg-white text-black font-semibold hover:bg-zinc-200 transition-colors">
           View Details
         </Button>
