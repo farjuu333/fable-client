@@ -1,46 +1,35 @@
-// // import React from 'react';
+"use client";
+import BookCard from '@/components/BookCard';
+import React, { useEffect, useState } from 'react';
 
-// // const BrowseEbookPage = () => {
-// //     return (
-// //         <div>
-// //             browse ebook page
-// //         </div>
-// //     );
-// // };
 
-// // export default BrowseEbookPage;
+export default function BrowseBooks() {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-// // import ProductCard from "@/components/ProductCard";
-// // import SearchProduct from "@/components/SearchProduct";
-// import { getAllEbooks} from "@/lib/api/ebook";
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/all-books`)
+      .then(res => res.json())
+      .then(data => {
+        setBooks(data);
+        setLoading(false);
+      });
+  }, []);
 
-// const BrowseEbookPage = async ({searchParams}) => {
-//     const {search} = await searchParams;
-//   const ebooks = await getAllEbooks(search);
-  
-//   return (
-//     <div className="container mx-auto px-4 py-8">
-//       <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Our Products</h1>
+  if (loading) return <div className="text-center py-20 text-white">Loading...</div>;
 
-//       <div className="text-center mb-10">
-//         <SearchProduct/>
-//       </div>
-
-//      { search && <h2>Found {products.length} Products with the search term <b>{search}</b></h2>}
+  return (
+    <div className="min-h-screen bg-[#0d0d0e] p-8">
+      <h1 className="text-3xl text-white font-bold mb-8">Browse Books</h1>
       
-//       {products && products.length > 0 ? (
-//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-//           {products.map((product) => (
-//             <ProductCard key={product._id} product={product} />
-//           ))}
-//         </div>
-//       ) : (
-//         <div className="text-center py-12">
-//           <p className="text-gray-500 text-lg">No products found.</p>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default BrowseEbookPage;
+      {/* Responsive Grid: 2 mobile, 3 tablet, 4 desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {books.length > 0 ? (
+          books.map(book => <BookCard key={book._id} book={book} />)
+        ) : (
+          <p className="text-zinc-500 col-span-full text-center">No ebooks found.</p>
+        )}
+      </div>
+    </div>
+  );
+}

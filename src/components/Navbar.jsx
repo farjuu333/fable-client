@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { ImBook } from "react-icons/im"; // লোগো ইমেজের বদলে প্রিমিয়াম বুক আইকন
+import { ImBook } from "react-icons/im"; 
 import { MdDashboard } from "react-icons/md";
 
 const Navbar = () => {
@@ -207,7 +207,7 @@ const Navbar = () => {
               </li>
               <li>
                 <Link 
-                  href="/products" 
+                  href="/ebook" 
                   onClick={() => setIsMenuOpen(false)}
                   className="block py-2.5 px-3 text-sm font-bold rounded-xl hover:bg-gray-50 text-gray-700"
                 >

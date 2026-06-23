@@ -4,11 +4,48 @@ import React, { useState } from "react";
 import { Form, TextField, Label, Input, TextArea, FieldError, Button, Select, ListBox, toast } from "@heroui/react";
 import { createManage } from "@/lib/actions/manage";
 import { redirect } from "next/navigation";
+import { ArrowUpToLine } from "lucide-react"; // আইকন ইমপোর্ট
 
 
 export default function AddEbookForm() {
     const [isPublished, setIsPublished] = useState(false);
+    const [logoUrl, setLogoUrl] = useState(''); // ইমেজ ইউআরএল স্টোর করার জন্য
     const [errors, setErrors] = useState({});
+const [isUploading, setIsUploading] = useState(false);
+
+    const handleLogoUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.size > 5 * 1024 * 1024) {
+            setErrors(prev => ({ ...prev, logo: "File size exceeds 5MB limit" }));
+            return;
+        }
+
+        setIsUploading(true);
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_KEY; 
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                setLogoUrl(data.data.url);
+                setErrors(prev => ({ ...prev, logo: null }));
+            } else {
+                setErrors(prev => ({ ...prev, logo: "Upload failed." }));
+            }
+        } catch (err) {
+            setErrors(prev => ({ ...prev, logo: "Network error" }));
+        } finally {
+            setIsUploading(false);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,6 +61,7 @@ export default function AddEbookForm() {
         // if (!data.content) newErrors.content = "Ebook content is required";
         // if (!data.status) newErrors.status = "Status is required";
         if (!data.title?.trim()) newErrors.title = "Book title is required";
+        if (!data.writerName?.trim()) newErrors.writerName = "Writer name is required";
     if (!data.price?.trim()) newErrors.price = "Price is required";
     if (!data.genre?.trim()) newErrors.genre = "Genre is required";
     if (!data.description?.trim()) newErrors.description = "Short description is required";
@@ -45,7 +83,7 @@ export default function AddEbookForm() {
             isPublished,
            bookId: currentBook._id, 
         bookTitle: currentBook.title,
-            
+            coverImage: logoUrl, // আপলোড করা লিঙ্কটি এখানে যোগ হলো
             status:"Published",
             isPubliclyVisible: true,
         };
@@ -82,6 +120,11 @@ export default function AddEbookForm() {
                         <Input placeholder="Enter book title" className={inputClass} />
                     </TextField>
 
+                    <TextField name="writerName" className="flex flex-col gap-1">
+    <Label className="text-zinc-400 text-sm font-medium">Writer Name</Label>
+    <Input placeholder="Enter your name" className={inputClass} />
+</TextField>
+
                     <div className="grid grid-cols-2 gap-4">
                         <TextField name="genre" isInvalid={!!errors.genre} className="flex flex-col gap-1">
                             <Label className="text-zinc-400 text-sm font-medium">Genre</Label>
@@ -93,13 +136,32 @@ export default function AddEbookForm() {
                         </TextField>
                     </div>
 
-                    <TextField name="coverImage" className="flex flex-col gap-1">
+                    {/* <TextField name="coverImage" className="flex flex-col gap-1">
                         <Label className="text-zinc-400 text-sm font-medium">Cover Image URL (ImgBB)</Label>
                         <div className="relative flex items-center">
                             
                             <Input placeholder="Paste image link here" className={`${inputClass} pl-10`} />
                         </div>
-                    </TextField>
+                    </TextField> */}
+
+                    {/* ইমেজ আপলোড সেকশন */}
+                    <div className="flex flex-col gap-1 w-full">
+                        <span className="text-zinc-400 font-medium text-sm">Cover Image</span>
+                        <div className="flex items-center gap-4 mt-1">
+                            <label className="w-14 h-14 border border-dashed border-zinc-700 bg-zinc-900/40 rounded-xl flex items-center justify-center cursor-pointer overflow-hidden">
+                                <input type="file" accept="image/png, image/jpeg" onChange={handleLogoUpload} className="hidden" />
+                                {logoUrl ? (
+                                    <img src={logoUrl} alt="Preview" className="w-full h-full object-cover" />
+                                ) : (
+                                    <ArrowUpToLine size={18} className="text-zinc-400" />
+                                )}
+                            </label>
+                            <div className="flex flex-col">
+                                <span className="text-sm text-zinc-300">{isUploading ? 'Uploading...' : 'Upload Image'}</span>
+                                {errors.logo && <span className="text-xs text-danger">{errors.logo}</span>}
+                            </div>
+                        </div>
+                    </div>
 
                     <TextField name="description" isInvalid={!!errors.description} className="flex flex-col gap-1">
                         <Label className="text-zinc-400 text-sm font-medium">Short Description</Label>
