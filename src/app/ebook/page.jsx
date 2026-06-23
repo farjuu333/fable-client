@@ -51,17 +51,37 @@ export default function BrowseBooks() {
   useEffect(() => {
     setLoading(true);
     const query = new URLSearchParams(params).toString();
+    console.log("Fetching URL:", `${process.env.NEXT_PUBLIC_API_URL}/api/all-books?${query}`);
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/all-books?${query}`)
       .then(res => res.json())
       .then(data => {
+        console.log("API Response Data:", data); // এটি দিয়ে চেক করুন সার্ভার থেকে কি ডাটা আসছে
         setBooks(data.books || []);
+        // new add
+        const total = data.totalPages || 1;
+        // old
         setTotalPages(data.totalPages || 0);
+        // new add
+        if (params.page > total) {
+        setParams(prev => ({ ...prev, page: total }));
+      }
+      // old
         setLoading(false);
       });
   }, [params]);
 
-  const handleFilter = (key, value) => {
-    setParams(prev => ({ ...prev, [key]: value, page: 1 }));
+  // const handleFilter = (key, value) => {
+  //   setParams(prev => ({ ...prev, [key]: value, page: 1 }));
+  // };
+const handleFilter = (key, value) => {
+    setParams(prev => {
+      // যদি পেজ পরিবর্তন করি, তবে শুধু পেজ আপডেট হবে
+      if (key === 'page') {
+        return { ...prev, page: value };
+      }
+      // অন্য ফিল্টার পরিবর্তন করলে পেজ ১ এ ফিরে যাবে
+      return { ...prev, [key]: value, page: 1 };
+    });
   };
 
   return (
@@ -100,12 +120,32 @@ export default function BrowseBooks() {
         </div>
       )}
 
-      {/* পেজিনেশন কন্ট্রোলস */}
-      <div className="flex justify-center items-center gap-4 mt-12">
+      
+      {/* <div className="flex justify-center items-center gap-4 mt-12">
         <Button disabled={params.page === 1} onClick={() => handleFilter('page', params.page - 1)}>Previous</Button>
         <span className="text-white">Page {params.page} of {totalPages}</span>
         <Button disabled={params.page >= totalPages} onClick={() => handleFilter('page', params.page + 1)}>Next</Button>
-      </div>
+      </div> */}
+
+      <div className="flex justify-center items-center gap-4 mt-12">
+  <Button 
+    // disabled={params.page <= 1} 
+    disabled={params.page === 1}
+    onClick={() => handleFilter('page', Math.max(1, params.page - 1))}
+  >
+    Previous
+  </Button>
+  
+  <span className="text-white">Page {params.page} of {totalPages}</span>
+  
+  <Button 
+    // disabled={params.page >= totalPages || totalPages === 0} 
+    disabled={params.page >= totalPages || totalPages === 0}
+    onClick={() => handleFilter('page', params.page + 1)}
+  >
+    Next
+  </Button>
+</div>
     </div>
   );
 }
