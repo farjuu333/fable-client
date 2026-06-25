@@ -1,7 +1,12 @@
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { auth } from "@/lib/auth";
+
+import { headers } from "next/headers";
 
 
-export default function DashboardLayout({ children }) {
+export default async function DashboardLayout({ children }) {
+  
+
   return (
     <div className="flex h-screen bg-gray-200 ">
        <div className="flex flex-1 overflow-hidden">

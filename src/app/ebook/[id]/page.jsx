@@ -3,6 +3,9 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from "@heroui/react";
 import { loadStripe } from '@stripe/stripe-js';
+import { authClient } from '@/lib/auth-client';
+
+
 
 
 // স্কিলেটন লোডার কম্পোনেন্ট
@@ -24,21 +27,18 @@ export default function EbookDetails() {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  
+// const { data: session } = authClient.useSession();
+//   const userId = session?.user?.id;
+
   useEffect(() => {
-
-
-
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${id}`)
       .then(res => res.json())
       .then(data => {
         setBook(data);
-        setLoading(false);
+        setLoading(false);});
+      }, [id]);
 
-       
-      });
-      
-  }, [id]);
+
 
 
   if (loading) return <div className="text-center py-20 text-white"><SkeletonLoader /></div>;
@@ -83,10 +83,11 @@ export default function EbookDetails() {
 
           {/* Action Buttons */}
           <div className="flex gap-4 mt-4">
-            {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8" >
+            {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8"onClick={handlePurchase} >
               Purchase Now
             </Button> */}
             <form action="/api/checkout_sessions" method="POST">
+            <input name="bookId" value={book._id}></input>
       <section>
         <button type="submit" role="link">
           Purchase Now

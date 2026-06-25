@@ -18,11 +18,20 @@ import { getManageEbooks } from '@/lib/api/manage'; // আপনার API ফ�
 import React from 'react';
 import { Table, Chip, Button, Tooltip } from "@heroui/react";
 import { Eye, Edit2, Trash2 } from "lucide-react"; 
+import { auth } from '@/lib/auth';
 
 const ManageEbookPage = async () => {
     // এখানে আপনার অথেনটিকেশন বা ইউজার আইডি থেকে সঠিক ID টি ডায়নামিক্যালি আনুন
+    const userSession= await auth.api.getSession({
+            headers:await headers()
+        })
+    
+        const user = userSession?.user
+        const userId=user.id
     const bookId = "book_123"; 
-    const books = await getManageEbooks(bookId) || []; 
+    const books = await getManageEbooks(userId) || []; 
+    // const bookId = "book_123"; 
+    // const books = await getManageEbooks(bookId) || []; 
 
     // স্ট্যাটাস অনুযায়ী রঙের জন্য
     const getStatusColor = (status) => {

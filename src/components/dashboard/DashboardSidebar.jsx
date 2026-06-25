@@ -45,8 +45,9 @@ export async function DashboardSidebar() {
         writer: writerNavLinks,
         admin: adminNavLinks
     };
-
+console.log("Current User Role:", role);
     const navItems = navLinksMap[role] || userNavLinks;
+    // const navItems = navLinksMap[user?.role] || "reader";
 
     const navContent = (
         <nav className="flex flex-col gap-1">

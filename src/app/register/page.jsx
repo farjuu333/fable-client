@@ -17,7 +17,7 @@ const SignUpPage = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
-
+    
     // BetterAuth-এর signUp.email কল করা
     const { data, error } = await authClient.signUp.email({
       email: user.email,
@@ -26,7 +26,7 @@ const SignUpPage = () => {
       image: user.image || "",
       // BetterAuth-এ কাস্টম ডাটা হিসেবে রোল এবং ডিফল্ট প্ল্যান পাস করা
       role: user.role || "user", 
-      plan: "free"
+      status: "free"
     });
     
     if (data) {

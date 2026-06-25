@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function BookCard({ book }) {
+    console.log("Book Data:", book);
   return (
     <Card className="bg-[#121214] border border-zinc-800 p-4 hover:border-zinc-600 transition-all rounded-xl shadow-lg">
       {/* ইমেজের অংশ */}
@@ -40,9 +41,9 @@ export default function BookCard({ book }) {
       {/* প্রাইস এবং স্ট্যাটাস */}
       <div className="flex justify-between items-center my-4">
         <span className="text-white font-bold text-xl">${book.price}</span>
-        {book.status === "Sold" && (
+        {book.status && (
           <span className="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded border border-red-500/50">
-            Sold
+            {book.status}
           </span>
         )}
       </div>

@@ -67,7 +67,7 @@ const [isUploading, setIsUploading] = useState(false);
     if (!data.description?.trim()) newErrors.description = "Short description is required";
     
     // কনটেন্ট এবং স্ট্যাটাস চেক
-    if (!data.content?.trim()) newErrors.content = "Ebook content is required";
+    // if (!data.content?.trim()) newErrors.content = "Ebook content is required";
     if (!data.status) newErrors.status = "Status is required";
 
         if (Object.keys(newErrors).length > 0) {
