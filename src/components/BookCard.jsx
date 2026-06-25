@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function BookCard({ book }) {
     console.log("Book Data:", book);
   return (
-    <Card className="bg-[#121214] border border-zinc-800 p-4 hover:border-zinc-600 transition-all rounded-xl shadow-lg">
+    <Card className="bg-gray-400 border border-zinc-800 p-4 hover:border-zinc-600 transition-all rounded-xl shadow-lg">
       {/* ইমেজের অংশ */}
       {/* <div className="aspect-[3/4] w-full overflow-hidden rounded-lg mb-4">
         <Image
@@ -27,8 +27,8 @@ export default function BookCard({ book }) {
 
       {/* বইয়ের তথ্য */}
       <div className="flex flex-col gap-2">
-        <h3 className="text-white font-bold text-lg truncate">{book.title}</h3>
-        <p className="text-zinc-400 text-sm">by {book.writerName}</p>
+        <h3 className="text-black font-bold text-lg truncate">{book.title}</h3>
+        <p className="text-zinc-800 text-sm">by {book.writerName}</p>
         
         {/* Genre যুক্ত করা হলো */}
         <div className="flex items-center gap-2 mt-1">

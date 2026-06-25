@@ -1,18 +1,4 @@
-// import { getManageEbooks } from '@/lib/api/manage';
-// import React from 'react';
 
-// const ManageEbookPage = async() => {
-//     const bookId = "book_123";
-//      const manage = await getManageEbooks(bookId); 
-//      console.log("manage book",manage);
-//     return (
-//         <div>
-//             manage ebook page
-//         </div>
-//     );
-// };
-
-// export default ManageEbookPage;
 
 import { getManageEbooks } from '@/lib/api/manage'; // আপনার API ফাংশন
 import React from 'react';
@@ -21,19 +7,18 @@ import { Eye, Edit2, Trash2 } from "lucide-react";
 import { auth } from '@/lib/auth';
 
 const ManageEbookPage = async () => {
-    // এখানে আপনার অথেনটিকেশন বা ইউজার আইডি থেকে সঠিক ID টি ডায়নামিক্যালি আনুন
+   
     const userSession= await auth.api.getSession({
             headers:await headers()
         })
     
         const user = userSession?.user
         const userId=user.id
-    const bookId = "book_123"; 
+     
     const books = await getManageEbooks(userId) || []; 
-    // const bookId = "book_123"; 
-    // const books = await getManageEbooks(bookId) || []; 
+   
 
-    // স্ট্যাটাস অনুযায়ী রঙের জন্য
+    
     const getStatusColor = (status) => {
         switch (status?.toLowerCase()) {
             case 'published':

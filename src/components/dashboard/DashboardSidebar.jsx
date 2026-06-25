@@ -19,8 +19,8 @@ export async function DashboardSidebar() {
 
     const userNavLinks = [
         { icon: LayoutDashboard, href: "/dashboard/user", label: "Overview" },
-        { icon: BookOpen, href: "/dashboard/user/history", label: "Purchase History" },
-        { icon: BookOpen, href: "/dashboard/user/purchased", label: "Purchased Ebooks" },
+        { icon: BookOpen, href: "/dashboard/user/purchases", label: "Purchase History" },
+        { icon: BookOpen, href: "/dashboard/user/purchased-ebooks", label: "Purchased Ebooks" },
         { icon: Bookmark, href: "/dashboard/user/bookmarks", label: "Bookmarked" },
         { icon: User, href: "/dashboard/user/profile", label: "Profile" },
     ];
