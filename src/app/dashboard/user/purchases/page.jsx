@@ -12,7 +12,7 @@ export default function PurchaseHistoryPage() {
   useEffect(() => {
     if (session?.user?.email) {
       fetch(
-        // `http://localhost:5000/api/dashboard/user/purchases?email=${encodeURIComponent(userEmail)}`,
+        
          `http://localhost:5000/api/dashboard/user/purchases?email=${session.user.email}`,
       )
         .then((res) => res.json())

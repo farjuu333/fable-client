@@ -24,7 +24,8 @@ export default async function Success({ searchParams }) {
 
   if (status === 'complete') {
     console.log(metadata)
-    await subscription({...metadata,sessionId:session_id})
+    const emailFromMetadata = metadata.userEmail
+    await subscription({...metadata,sessionId:session_id,emailFromMetadata,status: 'complete'})
     return (
       <section id="success">
         <p>

@@ -16,13 +16,14 @@ export async function DashboardSidebar() {
 
     const user = session?.user;
     const role = user?.role || "user"; 
+    console.log(role)
 
     const userNavLinks = [
         { icon: LayoutDashboard, href: "/dashboard/user", label: "Overview" },
         { icon: BookOpen, href: "/dashboard/user/purchases", label: "Purchase History" },
         { icon: BookOpen, href: "/dashboard/user/purchased-ebooks", label: "Purchased Ebooks" },
         { icon: Bookmark, href: "/dashboard/user/bookmarks", label: "Bookmarked" },
-        { icon: User, href: "/dashboard/user/profile", label: "Profile" },
+        
     ];
 
     const writerNavLinks = [

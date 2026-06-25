@@ -68,7 +68,7 @@ export default function EbookTable({
                     )}
                     <td className="p-3">
                       <Link
-                        href={`/ebooks/${ebook._id}`}
+                        href={`/ebook/${ebook._id}`}
                         className="text-indigo-600 hover:text-indigo-800"
                       >
                         <Eye className="w-4 h-4" />
