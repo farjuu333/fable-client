@@ -18,7 +18,7 @@ const Navbar = () => {
 
   const pathname = usePathname();
   
-  // ড্যাশবোর্ড পেজগুলোতে নেভবার হাইড রাখার লজিক
+  
   if (pathname.includes("dashboard")) {
     return null;
   }
@@ -27,7 +27,7 @@ const Navbar = () => {
     await authClient.signOut();
   };
 
-  // অ্যাক্টিভ রাউট হাইলাইট করার কন্ডিশনাল ক্লাস
+
   const getLinkClassName = (path) => {
     return pathname === path
       ? "font-bold text-[#0070F3] transition-colors text-sm"
@@ -36,8 +36,8 @@ const Navbar = () => {
 
   return (
     <div className="w-full bg-white">
-      {/* 🌟 আকর্ষণীয় ও প্রিমিয়াম Marquee সেকশন */}
-      <div className="bg-[#0070F3] py-2.5  text-sm font-bold shadow-sm">
+      
+      <div className="bg-[#5fa4f2] py-2.5  text-sm font-bold shadow-sm">
         <marquee scrollamount="5" className="tracking-wide">
           ✨ Welcome to Fable! Discover & Read Original Ebooks from Talented Global Writers 📚 | ✍️ Join as a Writer, Publish Your Masterpiece with Secure One-Time Verification Pay 🚀 | 💳 Fast, Safe & Seamless Transactions Powered by Stripe Gateway!
         </marquee>

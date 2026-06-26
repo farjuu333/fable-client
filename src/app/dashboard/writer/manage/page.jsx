@@ -1,10 +1,11 @@
 
 
-import { getManageEbooks } from '@/lib/api/manage'; // আপনার API ফাংশন
+import { getManageEbooks } from '@/lib/api/manage'; 
 import React from 'react';
 import { Table, Chip, Button, Tooltip } from "@heroui/react";
 import { Eye, Edit2, Trash2 } from "lucide-react"; 
 import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 const ManageEbookPage = async () => {
    

@@ -38,14 +38,14 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/"
-            className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gray-900 hover:bg-indigo-600 text-white font-medium rounded-2xl transition-all duration-300"
+            className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gray-900 hover:bg-gray-400 text-blue-600 font-medium rounded-2xl transition-all duration-300"
           >
             <CornerDownLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Back to Chapter One
           </Link>
           
           <Link
-            href="/browse"
+            href="/ebook"
             className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-gray-700 font-medium rounded-2xl border border-gray-200 hover:border-indigo-200 hover:text-indigo-600 transition-all"
           >
             <BookOpenText className="w-4 h-4" />
